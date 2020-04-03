@@ -15,4 +15,13 @@ Make sure before working on the front end to first check into its directory and 
 pwd <<Command must return: "../../../../AllJsPOC">>
 npm install
 ```
-Another thing we needd to make sure we have is the 
+Another thing we needd to make sure we have is the MongoDB is setup right
+Run the following command:
+```
+node createDB.js
+```
+
+After that is complete you can start the backend:
+```
+npm start
+```
