@@ -1,6 +1,7 @@
 //Include Everything
 var mongo = require('mongodb').MongoClient;;
 var express = require('express');
+var cors = require('cors')
 var bodyParser = require('body-parser');
 
 //Setup express and add a JSON parser to it in order to handle JSON Objects
@@ -9,10 +10,11 @@ var jsonParser = bodyParser.json({
     extended: false
 })
 app.use(express.static('public'));
+app.use(cors());
 app.use(jsonParser);
 
 //Add a POST request handler to express to handle login
-var url = "mongodb://localhost:27017/";
+var url = "mongodb://192.168.1.107:27017/";
 app.post('/users/login', function (req, res) {
     //Parse properties from body
     var un = req.body.username;

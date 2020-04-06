@@ -7,18 +7,17 @@ import { Observable, of} from 'rxjs';
 })
 
 export class UserService {
-	mock: boolean = true;
-	base_path:string = 'http://localhost:9090/user';
+	base_path:string = 'http://localhost:9090/users';
 
   	constructor(
 		  private http: HttpClient
 		  ) { }
 
-  	login(user){
+  	login(user) {
 		return this.http.post(this.base_path + '/login', user);
 	}
 	  
-  	signUp(user){
+  	signUp(user) {
 		return this.http.post(this.base_path + '/signup', user);
   	}
 }

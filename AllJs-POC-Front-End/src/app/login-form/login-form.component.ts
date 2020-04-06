@@ -9,11 +9,15 @@ import { UserService } from '../user.service';
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
-	loginForm: FormGroup;
+  loginForm: FormGroup;
+  errorOnLogin = {
+    error: false,
+    errorPhrase: ''
+  };
 
   constructor(
     private router: Router,
-    private userService
+    private userService: UserService
     ) { }
 
   ngOnInit(){
@@ -23,13 +27,21 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.loginForm.value);
-    let user = {
+    const user = {
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
-    }
-    let loggedinUser = this.userService.login(user);
-    console.log(loggedinUser);
+    };
+    this.userService.login(user)
+      .subscribe((res) => {
+        console.log(res);
+        this.errorOnLogin.error = false;
+        this.errorOnLogin.errorPhrase = '';
+      },
+      (err) => {
+        this.errorOnLogin.error = true;
+        this.errorOnLogin.errorPhrase = err.error.errorMessage;
+      });
   }
 }

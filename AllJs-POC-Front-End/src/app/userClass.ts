@@ -1,4 +1,4 @@
-export class User{
+export class User {
 	public username: string;
 	public password: string;
 
@@ -8,7 +8,7 @@ export class User{
 	}
 }
 
-export class NewUser{	
+export class NewUser {
 	public firstName: string;
 	public lastName: string;
 	public birthDate: string;
