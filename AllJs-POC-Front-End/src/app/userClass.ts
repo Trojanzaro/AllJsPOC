@@ -14,15 +14,15 @@ export class NewUser{
 	public birthDate: string;
 	public username: string;
 	public password: string;
-	public remember: boolean;
+	public email: string;
 
-	constructor(f,l,b,u,p,r)
+	constructor(f,l,b,u,p,e)
 	{
 		this.firstName=f;
 		this.lastName=l;
 		this.birthDate=b;
 		this.username=u;
 		this.password=p;
-		this.remember=r;
+		this.email=e;
 	}
 }

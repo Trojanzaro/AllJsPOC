@@ -19,13 +19,11 @@ export class LoginFormComponent implements OnInit {
   	this.loginForm = new FormGroup({
           username: new FormControl(''),
           password: new FormControl('')
-      
     });
   }
 
   onSubmit(){
-    //this.users.find( (User)=>  == this.loginForm.get('username'));
-
+    console.log(this.loginForm.value);
   }
 
 
