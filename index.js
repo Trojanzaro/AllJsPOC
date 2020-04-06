@@ -52,6 +52,59 @@ app.post('/users/login', function (req, res) {
     });
 }); //End of CallBack Hell
 
+
+app.post('/users/signup', function (req, res){
+
+    var fn = req.body.firstname;
+    var ln = req.body.lastname;
+    var bd = req.body.birthdate;
+    var em = req.body.email;
+    var un = req.body.username;
+    var pass = req.body.password;
+
+    mongo.connect(url, function(err, db){
+        if(err) throw err;
+        var dbo = db.db("AlljsPOCDB");
+        var query = {
+            firstname : fn,
+            lastname : ln,
+            birthdate : bd,
+            email : em,
+            username : un,
+            password : pass
+        };
+        //insert new user
+        dbo.collection("users").insertOne(query, function(err, result, docsInserted){
+            if (err) throw err;
+
+            if(result.length === 0 ){
+                res.status(404);
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({
+                    errorCode: 404,
+                    errorMessage: "Something went wrong, try again!"
+                }));
+                res.end();
+            }else {
+                res.setHeader('Content-Type', 'application/json');
+                res.send({
+                    insertedCount: result.insertedCount,
+                    insertedId: result.insertedId,
+                    n: result.result.n,
+                    ok : result.result.ok
+                    // firstname: result[0].firstname,
+                    // lastname: result[0].lastname,
+                    // birthdate: result[0].birthdate,
+                    // username: result[0].username
+                });
+                res.end();
+            }
+            //console.log("Item inserted");
+            db.close();
+        });        
+    });
+});
+
 var server = app.listen(9090, function () {
     var host = server.address().address
     var port = server.address().port
