@@ -1,31 +1,23 @@
 import { Injectable } from '@angular/core';
-import { User} from './userClass';
 import { HttpClient, HttpParams} from '@angular/common/http';
 import { Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
+	base_path:string = 'http://localhost:9090/users';
 
-	mock: boolean = true;
-	base_path:string = 'localhost';
+  	constructor(
+		  private http: HttpClient
+		  ) { }
 
-  	constructor(private http: HttpClient) { }
-
-  	getUsers () : Observable<User[]> {
-  		if (this.mock){
-  			return of(USERS_LIST);
-  		}else {
-  			return this.http.get<User[]>(this.base_path+'/login-form');
-  		}
+  	login(user) {
+		return this.http.post(this.base_path + '/login', user);
+	}
+	  
+  	signUp(user) {
+		return this.http.post(this.base_path + '/signup', user);
   	}
 }
-
-export const USERS_LIST = 
-	[ 
-		{
-			username: 'maria',
-			password: 'maria'
-		}
-	]

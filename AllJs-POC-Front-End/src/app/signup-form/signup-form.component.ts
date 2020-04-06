@@ -10,7 +10,7 @@ import { NewUser} from '../userClass';
 })
 export class SignupFormComponent implements OnInit {
 	form: FormGroup;
-	newUsers : NewUser[];
+	newUser : NewUser;
 
   	constructor() { }
 
@@ -25,9 +25,7 @@ export class SignupFormComponent implements OnInit {
   		});
   	}
 
-  	onSubmit(){
+  	onSubmit() {
   		console.log(this.form.value)
-  		//this.newUsers.push(new NewUser(this.form.get('fistname'),this.form.get('lastname'),this.form.get('birthDate'),this.form.get('username'),this.form.get('password'),this.form.get('remember')));
   	}
-
 }

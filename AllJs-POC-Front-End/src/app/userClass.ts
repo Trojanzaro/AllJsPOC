@@ -1,4 +1,4 @@
-export class User{
+export class User {
 	public username: string;
 	public password: string;
 
@@ -8,21 +8,21 @@ export class User{
 	}
 }
 
-export class NewUser{	
+export class NewUser {
 	public firstName: string;
 	public lastName: string;
 	public birthDate: string;
 	public username: string;
 	public password: string;
-	public remember: boolean;
+	public email: string;
 
-	constructor(f,l,b,u,p,r)
+	constructor(f,l,b,u,p,e)
 	{
 		this.firstName=f;
 		this.lastName=l;
 		this.birthDate=b;
 		this.username=u;
 		this.password=p;
-		this.remember=r;
+		this.email=e;
 	}
 }

@@ -7,6 +7,9 @@
 		<label>Password</label>
 		<input type="password" formControlName="password" placeholder="Enter password">
 	</div>
+	<span *ngIf = "errorOnLogin.error" style="color: red">
+		{{errorOnLogin.errorPhrase}}
+	</span>
 	<div class="input">
 		<input type="submit" value="Login">
 		<nav>
