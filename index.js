@@ -1,5 +1,6 @@
 //Include Everything
-var mongo = require('mongodb').MongoClient;;
+var mongo = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 var express = require('express');
 var cors = require('cors')
 var bodyParser = require('body-parser');
@@ -13,45 +14,44 @@ app.use(express.static('public'));
 app.use(cors());
 app.use(jsonParser);
 
-//Add a POST request handler to express to handle login
+//Setup Mongoose
 var url = "mongodb://localhost:27017/";
-app.post('/users/login', function (req, res) {
+var usersSchema = mongoose.Schema({
+    firstname: String,
+    lastname: String,
+    birthDate: String,
+	username: String,
+	password: String,
+	email: String
+})
+
+var User =  mongoose.model("User", usersSchema);
+
+//Add a POST request handler to express to handle login
+app.post('/users/login', async function (req, res) {
     //Parse properties from body
     var un = req.body.username;
     var pass = req.body.password;
-
-    //Connect to DB
-    mongo.connect(url, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("AlljsPOCDB");
-        var query = {
-            username: un,
-            password: pass
-        };
-
-        //Find User
-        dbo.collection("users").find(query).toArray(function (err, result) {
-            if (err) throw err;
-
-            if (result.length === 0) {
-                res.status(404);
-                res.setHeader('Content-Type', 'application/json');
-                res.send(JSON.stringify({
-                    errorCode: 404,
-                    errorMessage: "Username or Password wrong!"
-                }));
-                res.end();
-            } else {
-                res.setHeader('Content-Type', 'application/json');
-                res.send({
-                    username: result[0].username,
-                    email: result[0].email
-                });
-                res.end();
-            }
-            db.close();
+    await mongoose.connect('mongodb://localhost:27017/AlljsPOCDB', { useNewUrlParser: true });
+    let user = await User.findOne({username: un, password: pass});
+    if (user === null) {
+        res.status(404);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            errorCode: 404,
+            errorMessage: "Username or Password wrong!"
+        }));
+        res.end();
+    } else {
+        res.setHeader('Content-Type', 'application/json');
+        res.send({
+            username: user.username,
+            email: user.email
         });
-    });
+        res.end();
+    }
+    await mongoose.disconnect();
+    console.log(user);
 }); //End of CallBack Hell
 
 
@@ -94,10 +94,6 @@ app.post('/users/signup', function (req, res){
                     insertedId: result.insertedId,
                     n: result.result.n,
                     ok : result.result.ok
-                    // firstname: result[0].firstname,
-                    // lastname: result[0].lastname,
-                    // birthdate: result[0].birthdate,
-                    // username: result[0].username
                 });
                 res.end();
             }
