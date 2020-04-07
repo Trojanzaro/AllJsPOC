@@ -1,23 +1,29 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-	<div class="input">
-		<label>Username</label>
-		<input type="text" formControlName="username" placeholder="Enter username">
-	</div>
-	<div class="input">
-		<label>Password</label>
-		<input type="password" formControlName="password" placeholder="Enter password">
-	</div>
-	<span *ngIf = "errorOnLogin.error" style="color: red">
-		{{errorOnLogin.errorPhrase}}
-	</span>
-	<div class="input">
-		<input type="submit" value="Login">
-		<nav>
-			<a routerLink="/signup-form">Sign up</a>	
-		</nav>
-	</div>
-	<p>
+<div *ngIf = "loggedIn">
+	Hello {{user.username}} Welcome to this amazing E-shop. <span style="align-content: right;"><button (click) = "signOut()">Sign Out</button></span>
+</div>
 
-	</p>
-</form>
+<div *ngIf = "!loggedIn">
+	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+		<div class="input">
+			<label>Username</label>
+			<input type="text" formControlName="username" placeholder="Enter username">
+		</div>
+		<div class="input">
+			<label>Password</label>
+			<input type="password" formControlName="password" placeholder="Enter password">
+		</div>
+		<span *ngIf = "errorOnLogin.error" style="color: red;">
+			{{errorOnLogin.errorPhrase}}
+		</span>
+		<div class="input">
+			<input type="submit" value="Login">
+			<nav>
+				<a routerLink="/signup-form">Sign up</a>	
+			</nav>
+		</div>
+		<p>
+
+		</p>
+	</form>
+</div>
 <router-outlet></router-outlet>

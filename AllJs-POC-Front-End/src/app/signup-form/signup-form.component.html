@@ -21,7 +21,9 @@
 		<label>Password</label>
 		<input type="text" name="password" formControlName="password" class="form-control">
 	</div>
-
+	<span *ngIf = "errorOnLogin.error" style="color: red;">
+		{{errorOnLogin.errorPhrase}}
+	</span>
 	<button class="btn btn-primary" type="submit"> Submit </button>
 
 	<nav>
