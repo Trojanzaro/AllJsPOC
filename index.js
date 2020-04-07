@@ -14,7 +14,7 @@ app.use(cors());
 app.use(jsonParser);
 
 //Add a POST request handler to express to handle login
-var url = "mongodb://192.168.1.107:27017/";
+var url = "mongodb://localhost:27017/";
 app.post('/users/login', function (req, res) {
     //Parse properties from body
     var un = req.body.username;
