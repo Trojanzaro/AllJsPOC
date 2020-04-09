@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { User } from '../userClass';
+import Amplify, { API } from 'aws-amplify';
 
 @Component({
   selector: 'app-login-form',
@@ -35,28 +36,36 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    console.log(this.loginForm.value);
-    const user = {
-      username: this.loginForm.value.username,
-      password: this.loginForm.value.password
-    };
-    this.userService.login(user)
-      .subscribe((res) => {
-        console.log(res);
-        this.user = res;
-        this.loggedIn = true;
-        this.errorOnLogin.error = false;
-        this.errorOnLogin.errorPhrase = '';
-      },
-        (err) => {
-          this.errorOnLogin.error = true;
-          this.errorOnLogin.errorPhrase = err.error.errorMessage;
-        });
+  async onSubmit() {
+    let response = await this.getData(this.loginForm.value.username);
+    console.log(response);
+    // console.log(this.loginForm.value);
+    // const user = {
+    //   username: this.loginForm.value.username,
+    //   password: this.loginForm.value.password
+    // };
+    // this.userService.login(user)
+    //   .subscribe((res) => {
+    //     console.log(res);
+    //     this.user = res;
+    //     this.loggedIn = true;
+    //     this.errorOnLogin.error = false;
+    //     this.errorOnLogin.errorPhrase = '';
+    //   },
+    //     (err) => {
+    //       this.errorOnLogin.error = true;
+    //       this.errorOnLogin.errorPhrase = err.error.errorMessage;
+    //     });
   }
 
   signOut() {
     this.user = null;
     this.loggedIn = false;
+  }
+
+  async getData(id) {
+    let apiName = 'dev-my-first-service';
+    let path = '/hello/' + id;
+    return await API.get(apiName, path, null);
   }
 }

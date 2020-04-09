@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-alljs-poc-front-end-dev-172346-authRole",
+            "UnauthRoleArn": "arn:aws:iam::783206811116:role/amplify-alljs-poc-front-end-dev-172346-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::783206811116:role/amplify-alljs-poc-front-end-dev-172346-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "amplify-alljs-poc-front-end-dev-172346-deployment",
+            "UnauthRoleName": "amplify-alljs-poc-front-end-dev-172346-unauthRole",
+            "StackName": "amplify-alljs-poc-front-end-dev-172346",
+            "StackId": "arn:aws:cloudformation:eu-central-1:783206811116:stack/amplify-alljs-poc-front-end-dev-172346/bb84adc0-7a6d-11ea-81b9-0a24e2904074",
+            "AmplifyAppId": "d270fd1l1ltqpn"
+        },
+        "categories": {
+            "auth": {
+                "alljspocfrontend598cf82e": {}
+            }
+        }
+    }
+}
