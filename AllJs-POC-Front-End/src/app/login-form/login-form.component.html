@@ -2,7 +2,9 @@
 	Hello {{user.username}} Welcome to this amazing E-shop. <span style="align-content: right;"><button (click) = "signOut()">Sign Out</button></span>
 </div>
 
-<div *ngIf = "!loggedIn">
+<amplify-authenticator></amplify-authenticator>
+
+<!-- <div *ngIf = "!loggedIn">
 	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 		<div class="input">
 			<label>Username</label>
@@ -25,5 +27,5 @@
 
 		</p>
 	</form>
-</div>
+</div> -->
 <router-outlet></router-outlet>

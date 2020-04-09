@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { User } from '../userClass';
 import Amplify, { API } from 'aws-amplify';
+
+import { AmplifyService }  from 'aws-amplify-angular';
 
 @Component({
   selector: 'app-login-form',
@@ -21,7 +22,8 @@ export class LoginFormComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private amplifyService: AmplifyService
   ) { }
 
   ngOnInit() {
