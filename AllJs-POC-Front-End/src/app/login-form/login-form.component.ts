@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../user.service';
-import { User } from '../userClass';
-import Amplify, { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-login-form',
@@ -12,60 +10,103 @@ import Amplify, { API } from 'aws-amplify';
 })
 export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
+  verifyForm: FormGroup;
   user = null;
   loggedIn = false;
+  loading = false;
+  userNotConfirmed = {
+    username: '',
+    unconfirmed: false
+  };
   errorOnLogin = {
     error: false,
     errorPhrase: ''
   };
 
   constructor(
-    private router: Router,
-    private userService: UserService
+    private router: Router
   ) { }
 
   ngOnInit() {
-    if (this.user === null) {
-      this.loggedIn = false;
-    } else {
-      this.loggedIn = true;
-    }
+    Auth.currentSession()
+      .then((data) => {
+        if (data !== undefined) {
+          this.user = data;
+          this.loggedIn = true;
+        }
+      })
+      .catch((err) => console.log(err));
     this.loginForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl('')
     });
+    this.verifyForm = new FormGroup({
+      verifyCode: new FormControl('')
+    });
   }
 
   async onSubmit() {
-    let response = await this.getData(this.loginForm.value.username);
-    console.log(response);
-    // console.log(this.loginForm.value);
-    // const user = {
-    //   username: this.loginForm.value.username,
-    //   password: this.loginForm.value.password
-    // };
-    // this.userService.login(user)
-    //   .subscribe((res) => {
-    //     console.log(res);
-    //     this.user = res;
-    //     this.loggedIn = true;
-    //     this.errorOnLogin.error = false;
-    //     this.errorOnLogin.errorPhrase = '';
-    //   },
-    //     (err) => {
-    //       this.errorOnLogin.error = true;
-    //       this.errorOnLogin.errorPhrase = err.error.errorMessage;
-    //     });
+    const username = this.loginForm.value.username;
+    const password = this.loginForm.value.password;
+    try {
+      this.loading = true;
+      const user = await Auth.signIn(username, password);
+      this.loading = false;
+      if (user.challengeName === 'SMS_MFA' ||
+          user.challengeName === 'SOFTWARE_TOKEN_MFA') {
+      } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+      } else if (user.challengeName === 'MFA_SETUP') {
+      } else {
+          this.errorOnLogin.errorPhrase = '';
+          this.errorOnLogin.error = false;
+          this.user = user;
+          this.loggedIn = true;
+      }
+  } catch (err) {
+      this.loading = false;
+      if (err.code === 'UserNotConfirmedException') {
+        this.userNotConfirmed.unconfirmed = true;
+        this.userNotConfirmed.username = username;
+      } else if (err.code === 'PasswordResetRequiredException') {
+      } else {
+        this.errorOnLogin.error = true;
+        this.errorOnLogin.errorPhrase = err.message;
+      }
+  }
+  }
+
+  confirmUser() {
+    const verifyCode = this.verifyForm.value.verifyCode;
+    Auth.confirmSignUp(this.userNotConfirmed.username, verifyCode)
+      .then(() => this.userNotConfirmed.unconfirmed = false)
+      .catch((err) => {
+        this.errorOnLogin.error = true;
+        this.errorOnLogin.errorPhrase = err.message;
+      });
+  }
+
+  resendVerifyCode() {
+    Auth.resendSignUp(this.userNotConfirmed.username).then(() => {
+      console.log('code resent successfully');
+  }).catch(e => {
+      console.log(e);
+  });
   }
 
   signOut() {
-    this.user = null;
-    this.loggedIn = false;
+    Auth.signOut()
+    .then(() =>  {
+      this.user = null;
+      this.loggedIn = false;
+    })
+    .catch((err) => console.log(err));
   }
 
+
   async getData(id) {
-    let apiName = 'dev-my-first-service';
-    let path = '/hello/' + id;
-    return await API.get(apiName, path, null);
+    const apiName = 'dev-my-first-service';
+    const path = '/users/' + id;
+    const data = await API.get(apiName, path, null);
+    console.log(data);
   }
 }
