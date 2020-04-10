@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../user.service';
-import Amplify, { API } from 'aws-amplify';
-
-import { Auth } from 'aws-amplify';
-import { ConstantPool } from '@angular/compiler';
+import { API, Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-login-form',
@@ -35,7 +31,6 @@ export class LoginFormComponent implements OnInit {
     Auth.currentSession()
       .then((data) => {
         if (data !== undefined) {
-          console.log(data);
           this.user = data;
           this.loggedIn = true;
         }
@@ -57,13 +52,11 @@ export class LoginFormComponent implements OnInit {
       this.loading = true;
       const user = await Auth.signIn(username, password);
       this.loading = false;
-      console.log(user);
       if (user.challengeName === 'SMS_MFA' ||
           user.challengeName === 'SOFTWARE_TOKEN_MFA') {
       } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
       } else if (user.challengeName === 'MFA_SETUP') {
       } else {
-          console.log(user);
           this.errorOnLogin.errorPhrase = '';
           this.errorOnLogin.error = false;
           this.user = user;
@@ -82,26 +75,16 @@ export class LoginFormComponent implements OnInit {
   }
   }
 
-  signOut() {
-    Auth.signOut()
-    .then(() =>  {
-      this.user = null;
-      this.loggedIn = false;
-      this.router.navigate(['/']);
-    })
-    .catch((err) => console.log(err));
-  }
-
-  async confirmUser() {
+  confirmUser() {
     const verifyCode = this.verifyForm.value.verifyCode;
-    const user = await Auth.confirmSignUp(this.userNotConfirmed.username, verifyCode)
+    Auth.confirmSignUp(this.userNotConfirmed.username, verifyCode)
       .then(() => this.userNotConfirmed.unconfirmed = false)
       .catch((err) => {
         this.errorOnLogin.error = true;
         this.errorOnLogin.errorPhrase = err.message;
       });
-    console.log(user);
   }
+
   resendVerifyCode() {
     Auth.resendSignUp(this.userNotConfirmed.username).then(() => {
       console.log('code resent successfully');
@@ -109,6 +92,16 @@ export class LoginFormComponent implements OnInit {
       console.log(e);
   });
   }
+
+  signOut() {
+    Auth.signOut()
+    .then(() =>  {
+      this.user = null;
+      this.loggedIn = false;
+    })
+    .catch((err) => console.log(err));
+  }
+
 
   async getData(id) {
     const apiName = 'dev-my-first-service';
