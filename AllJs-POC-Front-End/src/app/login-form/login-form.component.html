@@ -1,50 +1,49 @@
-<button (click) = "getData(12345678)" >CLICK ME WHEN LOGGED IT</button>
-
-<div *ngIf = "loggedIn">
-	Hello {{user.username}} Welcome to this amazing E-shop. <span style="align-content: right;"><button (click) = "signOut()">Sign Out</button></span>
+<div  *ngIf="!loggedIn and !userNotConfirmed.unconfirmed">
+	<form class="form-container" [formGroup]="loginForm">
+		<mat-form-field appearance="outline">
+			<mat-label>Username</mat-label>
+			<input matInput type="text" formControlName="username" placeholder="Username">
+		</mat-form-field>
+		<mat-form-field appearance="outline">
+			<mat-label>Password</mat-label>
+			<input matInput type="password" formControlName="password" placeholder="Password">
+		</mat-form-field>
+		<mat-progress-spinner [diameter]="34" *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+		<span *ngIf="errorOnLogin.error" style="color: red;">
+			{{errorOnLogin.errorPhrase}}
+			<p>
+		</span>
+			<button color="primary" mat-raised-button (click)="login()">Login</button>
+		<nav>
+			<a routerLink="/signup-form">Sign up</a>
+		</nav>
+		<p>
+	</form>
 </div>
-
-<div *ngIf = "!loggedIn and !userNotConfirmed.unconfirmed">
-	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<div *ngIf="userNotConfirmed.unconfirmed">
+	<form [formGroup]="verifyForm" (ngSubmit)="confirmUser()">
 		<div class="input">
-			<label>Username</label>
-			<input type="text" formControlName="username" placeholder="Enter username">
+			<label>Verification Code</label>
+			<input type="text" formControlName="verifyCode" placeholder="Enter Verification Code">
 		</div>
-		<div class="input">
-			<label>Password</label>
-			<input type="password" formControlName="password" placeholder="Enter password">
-		</div>
-		<img *ngIf = "loading" src="https://1.bp.blogspot.com/-yIhXlQfYN1E/WMksG192LLI/AAAAAAAAA9w/txsqdQfykVksDEFshayeN54c0Gu6C3AAwCLcB/s1600/glow.gif" width="70" height="70"/>
-		<span *ngIf = "errorOnLogin.error" style="color: red;">
+		<span *ngIf="errorOnLogin.error" style="color: red;">
 			{{errorOnLogin.errorPhrase}}
 		</span>
 		<div class="input">
-			<input type="submit" value="Login">
-			<nav>
-				<a routerLink="/signup-form">Sign up</a>	
-			</nav>
+			<input type="submit" value="Verify">
 		</div>
 		<p>
-
+			<a href="/#" (click)="resendVerifyCode()">Resend Verify Code</a>
 		</p>
 	</form>
 
-	<div *ngIf = "userNotConfirmed.unconfirmed">
-		<form [formGroup]="verifyForm" (ngSubmit)="confirmUser()">
-			<div class="input">
-				<label>Verification Code</label>
-				<input type="text" formControlName="verifyCode" placeholder="Enter Verification Code">
-			</div>
-			<span *ngIf = "errorOnLogin.error" style="color: red;">
-				{{errorOnLogin.errorPhrase}}
-			</span>
-			<div class="input">
-				<input type="submit" value="Verify">
-			</div>
-			<p>
-				<a href="/#" (click) = "resendVerifyCode()">Resend Verify Code</a>
-			</p>
-		</form>
-
 </div>
+
+<div *ngIf="loggedIn">
+	Hello {{user.username}} Welcome to this amazing E-shop. <span style="align-content: right;"><button
+			(click)="signOut()">Sign Out</button></span>
+	<p></p>
+	<button (click)="getData(12345678)">CLICK ME WHEN LOGGED IT</button>
+</div>
+
 <router-outlet></router-outlet>

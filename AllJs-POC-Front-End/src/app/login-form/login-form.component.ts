@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { API, Auth } from 'aws-amplify';
 
 @Component({
@@ -45,7 +45,7 @@ export class LoginFormComponent implements OnInit {
     });
   }
 
-  async onSubmit() {
+  async login() {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
     try {

@@ -1,5 +1,68 @@
+.form-container {
+  text-align: center;
+  max-width: 40%;
+  margin: auto;
+  margin-top: 7%;
+  caret-color: #86BC25 !important;
+
+}
+.mat-form-field.mat-focused .mat-form-field-label{
+  color:#86BC25 !important ;
+}
+
+.form-container mat-form-field {
+  width: 100%;
+  margin-top: 6px;
+  caret-color: #86BC25 !important;
+
+}
+
+.form-container mat-form-field mat-icon {
+  cursor: default;
+}
+
+.form-container button {
+  margin-top: 12px;
+  caret-color: #86BC25 !important;
+}
+
+.form-signin {
+  margin-bottom: 11%;
+  caret-color: #86BC25 !important;
+}
+
+.image-element {
+  width: 100px;
+  width: 9%;
+}
+
+@media only screen and (max-width: 600px) {
+  .responsiveWidth {
+    width: 65% !important;
+  }
+
+  .form-container {
+    margin-top: 28%;
+  }
+
+  .form-signin {
+    margin-bottom: 28%;
+  }
+
+  .image-element {
+    width: 82px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .form-container {
+    max-width: 80%;
+  }
+}
+
+
 input {
-	width: 8%;
+	width: 100%;
 }
 
 form{
