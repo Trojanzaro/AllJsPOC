@@ -30,10 +30,9 @@ export class LoginFormComponent implements OnInit {
   ngOnInit() {
     Auth.currentSession()
       .then((data) => {
-        if (data !== undefined) {
-          this.user = data;
-          this.loggedIn = true;
-        }
+        console.log(data);
+        this.user = data;
+        this.loggedIn = true;
       })
       .catch((err) => console.log(err));
     this.loginForm = new FormGroup({
@@ -65,6 +64,9 @@ export class LoginFormComponent implements OnInit {
   } catch (err) {
       this.loading = false;
       if (err.code === 'UserNotConfirmedException') {
+        this.loggedIn = false;
+        this.errorOnLogin.errorPhrase = '';
+        this.errorOnLogin.error = false;
         this.userNotConfirmed.unconfirmed = true;
         this.userNotConfirmed.username = username;
       } else if (err.code === 'PasswordResetRequiredException') {
@@ -78,7 +80,11 @@ export class LoginFormComponent implements OnInit {
   confirmUser() {
     const verifyCode = this.verifyForm.value.verifyCode;
     Auth.confirmSignUp(this.userNotConfirmed.username, verifyCode)
-      .then(() => this.userNotConfirmed.unconfirmed = false)
+      .then(() => {
+        this.userNotConfirmed.unconfirmed = false;
+        this.errorOnLogin.errorPhrase = '';
+        this.errorOnLogin.error = false;
+      })
       .catch((err) => {
         this.errorOnLogin.error = true;
         this.errorOnLogin.errorPhrase = err.message;

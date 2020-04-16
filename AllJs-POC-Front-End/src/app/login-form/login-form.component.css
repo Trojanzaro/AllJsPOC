@@ -1,14 +1,12 @@
 .form-container {
-  -webkit-box-shadow: 11px 11px 15px 0px rgba(0,0,0,0.26);
-  -moz-box-shadow: 11px 11px 15px 0px rgba(0,0,0,0.26);
   box-shadow: 11px 11px 15px 0px rgba(0,0,0,0.26);
   text-align: center;
   max-width: 40%;
   margin: auto;
   margin-top: 7%;
-  border-color: dimgray;
   caret-color: #86BC25 !important;
   align-content: center;
+
 }
 .mat-form-field.mat-focused .mat-form-field-label{
   color:#86BC25 !important ;
@@ -16,8 +14,8 @@
 
 .form-container mat-form-field {
   width: 63%;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 17px;
+  margin-bottom: 2px;
   caret-color: #86BC25 !important;
 }
 

@@ -1,4 +1,4 @@
-<div  *ngIf="!loggedIn and !userNotConfirmed.unconfirmed">
+<div  *ngIf="!loggedIn && !userNotConfirmed.unconfirmed">
 	<form class="form-container" [formGroup]="loginForm">
 		<mat-form-field appearance="outline">
 			<mat-label>Username</mat-label>
@@ -7,7 +7,7 @@
 		<br>
 		<mat-form-field appearance="outline">
 			<mat-label>Password</mat-label>
-			<input matInput type="password" formControlName="password" placeholder="Password">
+			<input matInput type="password" formControlName="password" placeholder="Password" required>
 		</mat-form-field>
 		<br>
 		<span *ngIf="errorOnLogin.error" style="color: red;">
@@ -22,18 +22,17 @@
 		<p>
 	</form>
 </div>
-<div *ngIf="userNotConfirmed.unconfirmed">
-	<form [formGroup]="verifyForm" (ngSubmit)="confirmUser()">
-		<div class="input">
-			<label>Verification Code</label>
-			<input type="text" formControlName="verifyCode" placeholder="Enter Verification Code">
-		</div>
+<div class="form-container" *ngIf="userNotConfirmed.unconfirmed">
+	<form [formGroup]="verifyForm" >
+		<mat-form-field appearance="outline">
+			<mat-label>Verification Code</mat-label>
+			<input matInput type="text" formControlName="verifyCode" placeholder="Verification Code">
+		</mat-form-field>
 		<span *ngIf="errorOnLogin.error" style="color: red;">
 			{{errorOnLogin.errorPhrase}}
 		</span>
-		<div class="input">
-			<input type="submit" value="Verify">
-		</div>
+		<br>
+		<button color="primary" mat-raised-button (click)="confirmUser()">Verify</button>
 		<p>
 			<a href="/#" (click)="resendVerifyCode()">Resend Verify Code</a>
 		</p>

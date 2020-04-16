@@ -17,6 +17,8 @@ import { SignupFormComponent } from './signup-form/signup-form.component';
 
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
+import { AppHeaderComponent } from './app-header/app-header.component';
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     LoginFormComponent,
     SignupFormComponent,
+    MainDashboardComponent,
+    AppHeaderComponent,
   ],
   imports: [
     BrowserModule,
